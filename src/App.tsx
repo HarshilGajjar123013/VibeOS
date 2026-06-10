@@ -70,15 +70,20 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
           </div>
 
           {/* Link columns */}
-          {[
-            { title: 'Product', links: ['Features', 'Integrations', 'Pricing'] },
-            { title: 'Resources', links: ['Guides', 'Blog', 'Help Center'] },
-            { title: 'Company', links: ['About Story', 'Careers', 'Contact'] }
-          ].map((col, idx) => (
+          {([
+            { title: 'Product', links: [{ label: 'Features' }, { label: 'Integrations' }, { label: 'Pricing' }] },
+            { title: 'Resources', links: [{ label: 'Guides' }, { label: 'Blog' }, { label: 'Help Center' }] },
+            { title: 'Company', links: [{ label: 'About Story' }, { label: 'Careers' }, { label: 'Contact' }] },
+            { title: 'Developer', links: [{ label: 'GitHub Repository', url: 'https://github.com/captainharshil32-commits/vibeos.git' }] }
+          ] as { title: string; links: { label: string; url?: string }[] }[]).map((col, idx) => (
             <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <h4 style={{ fontSize: '14px', fontWeight: 700 }}>{col.title}</h4>
               {col.links.map(l => (
-                <span key={l} style={{ fontSize: '13px', color: 'var(--text-muted)', cursor: 'pointer' }} className="hover-lift">{l}</span>
+                l.url ? (
+                  <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none' }} className="hover-lift">{l.label}</a>
+                ) : (
+                  <span key={l.label} style={{ fontSize: '13px', color: 'var(--text-muted)', cursor: 'pointer' }} className="hover-lift">{l.label}</span>
+                )
               ))}
             </div>
           ))}
