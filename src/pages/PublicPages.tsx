@@ -17,7 +17,7 @@ import {
 // ==========================================
 export const LandingPage: React.FC = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '80px', width: '100%' }}>
+    <div className="landing-page-wrapper" style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
       <Hero />
 
       <Showcase />
@@ -25,18 +25,17 @@ export const LandingPage: React.FC = () => {
       <FeaturesGrid />
 
       {/* How it Works */}
-      <section style={{
+      <section className="landing-how-it-works" style={{
         backgroundColor: 'var(--bg-card)',
-        padding: '80px 24px',
         borderTop: '1px solid var(--border-color)',
         borderBottom: '1px solid var(--border-color)'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <Badge type="info">METHODOLOGY</Badge>
             <h2 style={{ marginTop: '16px' }}>How Vibe OS works</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px', position: 'relative' }}>
+          <div className="landing-steps-grid">
             {[
               { num: '1', title: 'Collect Feedback', desc: 'Send automated pulses or wellbeing surveys. Team members reply anonymously in 30 seconds via Slack, Teams, or Web.' },
               { num: '2', title: 'Analyze Trends', desc: 'Our AI model aggregates opinions, calculates sentiment indices, and highlights departments requiring supervisor support.' },
@@ -59,7 +58,7 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Benefits split */}
-      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '60px', alignItems: 'center' }}>
+      <section className="landing-benefits-section">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <Badge type="success">BENEFITS</Badge>
           <h2>Build a workplace people never want to leave</h2>
@@ -111,7 +110,7 @@ export const LandingPage: React.FC = () => {
 export const FeaturesPage: React.FC = () => {
   
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '80px' }}>
+    <div className="mobile-padding-y-lg mobile-padding-sm" style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '80px' }}>
       <div style={{ textAlign: 'center' }}>
         <Badge type="info">DEEP DIVE</Badge>
         <h1 style={{ marginTop: '16px', fontSize: 'var(--fs-h2)' }}>Supercharge your team operations</h1>
@@ -125,10 +124,7 @@ export const FeaturesPage: React.FC = () => {
         { title: 'Interactive Sentiment Map', desc: 'Read between the lines. Our AI processes open-form inputs and segments comments by department so managers know exactly where to apply resources.', features: ['Department correlation matrices', 'Word-association clustering', 'Neutral, positive, and negative sorting'], rightSide: false },
         { title: 'Action Recommendations Engine', desc: 'Feedback is useless without action. Vibe OS serves up contextual scripts and 1-on-1 discussion templates automatically when scores slide.', features: ['Weekly action checklists for leaders', 'Meeting cadences auditor', 'Auto-generated follow-up pulses'], rightSide: true }
       ].map((block, idx) => (
-        <div key={idx} style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '60px',
+        <div key={idx} className="responsive-grid-2col" style={{
           alignItems: 'center'
         }}>
           {block.rightSide ? (
@@ -181,14 +177,14 @@ export const PricingPage: React.FC = () => {
   const { setCurrentPage } = useApp();
   
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '60px' }}>
+    <div className="mobile-padding-y-lg mobile-padding-sm" style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '60px' }}>
       <div style={{ textAlign: 'center' }}>
         <Badge type="info">TRANSPARENT PLANS</Badge>
         <h1 style={{ marginTop: '16px', fontSize: 'var(--fs-h2)' }}>Simple, scale-friendly pricing</h1>
         <p>Start free. Upgrade as you add people.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+      <div className="responsive-grid-fit-300">
         {[
           { name: 'Starter', price: '$4', desc: 'Perfect for small teams launching feedback structures.', features: ['Up to 50 users', 'Weekly wellbeing pulses', 'Standard template library', 'Slack integration'], popular: false },
           { name: 'Growth', price: '$8', desc: 'Ideal for mid-sized squads scaling culture.', features: ['Up to 500 users', 'AI Insights Engine', 'Anonymous feedback feed', 'Custom survey builder', 'Priority support'], popular: true },
@@ -199,7 +195,7 @@ export const PricingPage: React.FC = () => {
             flexDirection: 'column',
             gap: '20px',
             border: plan.popular ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-            transform: plan.popular ? 'scale(1.03)' : 'none'
+            transform: (plan.popular && typeof window !== 'undefined' && window.innerWidth > 768) ? 'scale(1.03)' : 'none'
           }}>
             {plan.popular && <Badge type="info">MOST POPULAR</Badge>}
             <div>
@@ -227,31 +223,33 @@ export const PricingPage: React.FC = () => {
 
       <div style={{ marginTop: '40px' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>Compare Features</h2>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '15px' }}>
-          <thead>
-            <tr style={{ borderBottom: '2px solid var(--border-color)' }}>
-              <th style={{ textAlign: 'left', padding: '12px' }}>Feature</th>
-              <th>Starter</th>
-              <th>Growth</th>
-              <th>Enterprise</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              { f: 'Anonymity Guarantees', s: 'Standard', g: 'Standard', e: 'Configurable' },
-              { f: 'AI Insights Reports', s: 'No', g: 'Yes', e: 'Custom Models' },
-              { f: 'Integrations', s: 'Slack only', g: 'All Standard', e: 'Custom API' },
-              { f: 'SSO/SAML Login', s: 'No', g: 'No', e: 'Yes' }
-            ].map((row, idx) => (
-              <tr key={idx} style={{ borderBottom: '1px solid var(--border-color)', textAlign: 'center' }}>
-                <td style={{ textAlign: 'left', padding: '12px', fontWeight: 500 }}>{row.f}</td>
-                <td>{row.s}</td>
-                <td>{row.g}</td>
-                <td>{row.e}</td>
+        <div className="table-scroll-container">
+          <table style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse', fontSize: '15px' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid var(--border-color)' }}>
+                <th style={{ textAlign: 'left', padding: '12px' }}>Feature</th>
+                <th>Starter</th>
+                <th>Growth</th>
+                <th>Enterprise</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {[
+                { f: 'Anonymity Guarantees', s: 'Standard', g: 'Standard', e: 'Configurable' },
+                { f: 'AI Insights Reports', s: 'No', g: 'Yes', e: 'Custom Models' },
+                { f: 'Integrations', s: 'Slack only', g: 'All Standard', e: 'Custom API' },
+                { f: 'SSO/SAML Login', s: 'No', g: 'No', e: 'Yes' }
+              ].map((row, idx) => (
+                <tr key={idx} style={{ borderBottom: '1px solid var(--border-color)', textAlign: 'center' }}>
+                  <td style={{ textAlign: 'left', padding: '12px', fontWeight: 500 }}>{row.f}</td>
+                  <td>{row.s}</td>
+                  <td>{row.g}</td>
+                  <td>{row.e}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -262,7 +260,7 @@ export const PricingPage: React.FC = () => {
 // ==========================================
 export const AboutPage: React.FC = () => {
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '60px' }}>
+    <div className="mobile-padding-y-lg mobile-padding-sm" style={{ maxWidth: '1000px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '60px' }}>
       <div style={{ textAlign: 'center' }}>
         <Badge type="info">OUR STORY</Badge>
         <h1 style={{ marginTop: '16px', fontSize: 'var(--fs-h2)' }}>Building workplaces people love</h1>
@@ -271,7 +269,7 @@ export const AboutPage: React.FC = () => {
         </p>
       </div>
 
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px' }}>
+      <section className="responsive-grid-2col">
         <Card style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <h3 style={{ color: 'var(--primary)' }}>Mission</h3>
           <p>Transform employee feedback into meaningful workplace improvements.</p>
@@ -284,7 +282,7 @@ export const AboutPage: React.FC = () => {
 
       <section>
         <h2 style={{ textAlign: 'center', marginBottom: '32px' }}>Our Values</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '24px' }}>
+        <div className="responsive-grid-fit-280">
           {['Transparency', 'Continuous Growth', 'Radical Inclusion', 'Empathetic Well-being'].map((v, i) => (
             <Card key={i} style={{ textAlign: 'center' }}>
               <h4 style={{ color: 'var(--accent)' }}>{v}</h4>
@@ -326,7 +324,7 @@ export const BlogPage: React.FC = () => {
     : MOCK_ARTICLES.filter(a => a.category === activeFilter);
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '48px' }}>
+    <div className="mobile-padding-y-lg mobile-padding-sm" style={{ maxWidth: '1000px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '48px' }}>
       <div style={{ textAlign: 'center' }}>
         <Badge type="info">RESOURCES</Badge>
         <h1 style={{ marginTop: '16px', fontSize: 'var(--fs-h2)' }}>The Culture Blueprint Blog</h1>
@@ -334,13 +332,14 @@ export const BlogPage: React.FC = () => {
       </div>
 
       {/* Categories */}
-      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
+      <div className="mobile-scroll-row" style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
         {filters.map(f => (
           <Button
             key={f}
             variant={activeFilter === f ? 'primary' : 'secondary'}
             size="sm"
             onClick={() => setActiveFilter(f)}
+            style={{ flexShrink: 0 }}
           >
             {f}
           </Button>
@@ -348,7 +347,7 @@ export const BlogPage: React.FC = () => {
       </div>
 
       {/* Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
+      <div className="responsive-grid-fit-300">
         {filteredArticles.map(art => (
           <Card key={art.id} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <Badge type="info">{art.category}</Badge>
@@ -367,10 +366,10 @@ export const BlogPage: React.FC = () => {
       </div>
 
       {/* Newsletter */}
-      <Card variant="premium" style={{ textAlign: 'center', padding: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+      <Card variant="premium" style={{ textAlign: 'center', padding: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }} className="mobile-padding-sm">
         <h3>Subscribe to our newsletter</h3>
         <p style={{ maxWidth: '500px' }}>Get weekly strategies and guides to improve your culture and team retention.</p>
-        <div style={{ display: 'flex', gap: '12px', width: '100%', maxWidth: '400px' }}>
+        <div className="responsive-flex-row mobile-stack" style={{ width: '100%', maxWidth: '400px' }}>
           <input
             type="email"
             placeholder="Enter your email"
@@ -408,7 +407,7 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '60px' }}>
+    <div className="mobile-padding-y-lg mobile-padding-sm responsive-grid-2col" style={{ maxWidth: '1000px', margin: '0 auto', padding: '100px 24px 80px 24px', gap: '60px' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <div>
           <Badge type="info">TALK TO US</Badge>
@@ -473,14 +472,14 @@ export const CareersPage: React.FC = () => {
   const { addToast } = useApp();
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '60px' }}>
+    <div className="mobile-padding-y-lg mobile-padding-sm" style={{ maxWidth: '1000px', margin: '0 auto', padding: '100px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '60px' }}>
       <div style={{ textAlign: 'center' }}>
         <Badge type="info">CAREERS</Badge>
         <h1 style={{ marginTop: '16px', fontSize: 'var(--fs-h2)' }}>Join the cultural revolution</h1>
         <p>Help us write the tools that make teams feel appreciated globally.</p>
       </div>
 
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+      <section className="responsive-grid-fit-280">
         <Card style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <h3>Remote First</h3>
           <p style={{ fontSize: '13px' }}>Work from anywhere. We provide full home-office upgrades and coworking stipends.</p>
@@ -499,7 +498,7 @@ export const CareersPage: React.FC = () => {
         <h2 style={{ marginBottom: '24px' }}>Open Positions</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {MOCK_JOBS.map(job => (
-            <Card key={job.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+            <Card key={job.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }} className="mobile-stack">
               <div>
                 <h3 style={{ fontSize: '18px' }}>{job.title}</h3>
                 <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
@@ -532,7 +531,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 80px)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))' }}>
+    <div style={{ minHeight: 'calc(100vh - 80px)' }} className="responsive-grid-2col">
       {/* Left panel - branding/quotes */}
       <div style={{
         backgroundColor: 'var(--primary-light)',
@@ -542,7 +541,7 @@ export const LoginPage: React.FC = () => {
         justifyContent: 'center',
         gap: '24px',
         borderRight: '1px solid var(--border-color)'
-      }}>
+      }} className="hide-on-mobile">
         <h2 style={{ fontSize: '36px', fontWeight: 800 }}>"The best workspace is one built with trust."</h2>
         <p>Vibe OS helps organizations understand employee priorities to execute smart solutions in real time.</p>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -555,7 +554,7 @@ export const LoginPage: React.FC = () => {
       </div>
 
       {/* Right panel - form */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px' }} className="mobile-padding-sm">
         <div style={{ width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <div>
             <h2 style={{ fontSize: '32px', fontWeight: 800 }}>Welcome Back</h2>
@@ -626,7 +625,7 @@ export const SignUpPage: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 80px)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))' }}>
+    <div style={{ minHeight: 'calc(100vh - 80px)' }} className="responsive-grid-2col">
       {/* Left panel */}
       <div style={{
         backgroundColor: 'var(--secondary-light)',
@@ -636,7 +635,7 @@ export const SignUpPage: React.FC = () => {
         justifyContent: 'center',
         gap: '24px',
         borderRight: '1px solid var(--border-color)'
-      }}>
+      }} className="hide-on-mobile">
         <h2 style={{ fontSize: '36px', fontWeight: 800 }}>"Retention starts with understanding."</h2>
         <p>Start your 14-day free trial today. Join over 5,000 corporate structures using Vibe OS dashboard analysis.</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -650,7 +649,7 @@ export const SignUpPage: React.FC = () => {
       </div>
 
       {/* Right panel */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px' }} className="mobile-padding-sm">
         <div style={{ width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <div>
             <h2 style={{ fontSize: '32px', fontWeight: 800 }}>Create Your Account</h2>

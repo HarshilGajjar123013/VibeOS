@@ -364,3 +364,230 @@ a {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
+
+/* ----------------------------------------------------
+   MOBILE RESPONSIVENESS HELPERS
+   ---------------------------------------------------- */
+@media (max-width: 768px) {
+  :root {
+    --fs-h1: 36px;
+    --fs-h2: 28px;
+    --fs-h3: 24px;
+    --fs-h4: 20px;
+    --fs-body: 15px;
+    --fs-small: 13px;
+  }
+}
+
+/* Responsive Grids */
+.responsive-grid-2-1 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.responsive-grid-1-8-1 {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.responsive-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.responsive-grid-settings {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.responsive-grid-fit-320 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.responsive-grid-fit-300 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.responsive-grid-fit-280 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.responsive-flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+/* Visibility and layout helpers */
+.hide-on-mobile {
+  display: inherit;
+}
+
+.show-on-mobile {
+  display: none !important;
+}
+
+.table-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-scroll-row {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .responsive-grid-2-1,
+  .responsive-grid-1-8-1,
+  .responsive-grid-2col,
+  .responsive-grid-settings,
+  .responsive-grid-fit-320,
+  .responsive-grid-fit-300,
+  .responsive-grid-fit-280 {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .responsive-flex-row {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .show-on-mobile {
+    display: block !important;
+  }
+  
+  .show-on-mobile-flex {
+    display: flex !important;
+  }
+
+  .mobile-stack {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .mobile-padding-sm {
+    padding: 16px !important;
+  }
+  
+  .mobile-padding-y-lg {
+    padding-top: 60px !important;
+    padding-bottom: 40px !important;
+  }
+
+  .mobile-scroll-row {
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none; /* Firefox */
+  }
+  .mobile-scroll-row::-webkit-scrollbar {
+    display: none; /* Safari/Chrome */
+  }
+  .mobile-scroll-row {
+    justify-content: flex-start !important;
+  }
+}
+
+.responsive-settings-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+@media (max-width: 768px) {
+  .responsive-settings-menu {
+    flex-direction: row !important;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+  .responsive-settings-menu::-webkit-scrollbar {
+    display: none;
+  }
+  .responsive-settings-menu button {
+    white-space: nowrap;
+  }
+}
+
+/* ----------------------------------------------------
+   LANDING PAGE SPECIFIC STYLES
+   ---------------------------------------------------- */
+.landing-page-wrapper {
+  gap: 80px;
+}
+
+.landing-how-it-works {
+  padding: 80px 24px;
+}
+
+.landing-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  position: relative;
+}
+
+.landing-benefits-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .landing-page-wrapper {
+    gap: 0;
+  }
+
+  .landing-how-it-works {
+    padding: 48px 16px;
+  }
+
+  .landing-steps-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .landing-benefits-section {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 400px) {
+  .landing-how-it-works {
+    padding: 40px 12px;
+  }
+
+  .landing-steps-grid {
+    gap: 24px;
+  }
+
+  .landing-benefits-section {
+    padding: 0 12px;
+    gap: 20px;
+  }
+}

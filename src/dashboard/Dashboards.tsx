@@ -52,7 +52,7 @@ export const ExecutiveDashboard: React.FC = () => {
       </div>
 
       {/* Metrics Widgets */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
+      <div className="responsive-grid-fit-280" style={{ gap: '20px' }}>
         <Card hoverEffect={true} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{ padding: '12px', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', borderRadius: 'var(--radius-md)' }}>
             <TrendingUp size={24} />
@@ -96,7 +96,7 @@ export const ExecutiveDashboard: React.FC = () => {
       </div>
 
       {/* Main Grid: Trends & Burnout */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', alignItems: 'start' }}>
+      <div className="responsive-grid-2-1" style={{ gap: '24px', alignItems: 'start' }}>
         <Card>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h3 style={{ fontSize: '18px' }}>Engagement Score Trend</h3>
@@ -111,7 +111,7 @@ export const ExecutiveDashboard: React.FC = () => {
       </div>
 
       {/* Recommendations & Insights */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+      <div className="responsive-grid-fit-300" style={{ gap: '24px' }}>
         <Card style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <h3 style={{ fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Lightbulb size={20} style={{ color: 'var(--warning)' }} /> Recent AI Insights
@@ -196,7 +196,7 @@ export const HRDashboard: React.FC = () => {
       </Card>
 
       {/* Survey Management & Recognition programs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+      <div className="responsive-grid-fit-300" style={{ gap: '24px' }}>
         
         {/* Survey list */}
         <Card style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -278,7 +278,7 @@ export const ManagerDashboard: React.FC = () => {
       </div>
 
       {/* Team Mood & Participation */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+      <div className="responsive-grid-fit-280" style={{ gap: '24px' }}>
         <Card style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{ padding: '16px', backgroundColor: 'var(--success-light)', color: 'var(--success)', borderRadius: '50%' }}>
             <Smile size={32} />
@@ -301,7 +301,7 @@ export const ManagerDashboard: React.FC = () => {
       </div>
 
       {/* Action tasks and Recommendations */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+      <div className="responsive-grid-fit-300" style={{ gap: '24px' }}>
         
         {/* Actions checklist */}
         <Card style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -413,7 +413,7 @@ export const EmployeeDashboard: React.FC = () => {
       </Card>
 
       {/* Main Grid split */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.8fr 1fr', gap: '24px', alignItems: 'start' }}>
+      <div className="responsive-grid-1-8-1" style={{ gap: '24px', alignItems: 'start' }}>
         
         {/* Left: Recognition Wall */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

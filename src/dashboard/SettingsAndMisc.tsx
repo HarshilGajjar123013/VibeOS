@@ -36,10 +36,10 @@ export const SettingsPanel: React.FC = () => {
         <p>Manage integrations, change subscription levels, or configure organizational locations.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '32px', alignItems: 'start' }}>
+      <div className="responsive-grid-settings">
         
         {/* Settings Left sub-menu */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <div className="responsive-settings-menu">
           {[
             { id: 'profile', label: 'My Profile' },
             { id: 'org', label: 'Organization' },
@@ -73,7 +73,7 @@ export const SettingsPanel: React.FC = () => {
           {activeSubTab === 'profile' && (
             <Card style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <h3 style={{ fontSize: '18px' }}>Profile Information</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="responsive-grid-2col">
                 <div>
                   <label style={{ fontSize: '12px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Full Name</label>
                   <input
@@ -99,7 +99,7 @@ export const SettingsPanel: React.FC = () => {
           {activeSubTab === 'org' && (
             <Card style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <h3 style={{ fontSize: '18px' }}>Organization Profile</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="responsive-grid-2col">
                 <div>
                   <label style={{ fontSize: '12px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Company Name</label>
                   <input

@@ -83,7 +83,7 @@ export const AnalyticsModule: React.FC = () => {
       </Card>
 
       {/* Analytics Charts split */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+      <div className="responsive-grid-fit-300">
         <Card>
           <h3 style={{ fontSize: '16px', marginBottom: '16px' }}>Culture Drivers Breakdown ({selectedDept} Dept)</h3>
           <BarChart data={chartData} height={200} color="var(--primary)" />
@@ -232,8 +232,7 @@ export const SurveyManagement: React.FC = () => {
           <Button style={{ alignSelf: 'flex-end' }} onClick={saveSurvey}>Save Survey & Schedule</Button>
         </Card>
       ) : (
-        /* Standard surveys view */
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+        <div className="responsive-grid-fit-300">
           {MOCK_SURVEYS.map(sur => (
             <Card key={sur.id} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -380,7 +379,7 @@ export const EmployerBrandModule: React.FC = () => {
       </div>
 
       {/* Dashboard split */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+      <div className="responsive-grid-fit-300">
         
         {/* Culture stories */}
         <Card style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -460,7 +459,7 @@ export const ReportsCenter: React.FC = () => {
             <ProgressBar percent={compileProgress} height={8} color="var(--primary)" />
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+          <div className="responsive-grid-fit-280" style={{ gap: '16px' }}>
             <Button size="lg" style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '24px' }} variant="secondary" onClick={() => startCompilation('PDF')}>
               <FileText size={32} style={{ color: 'var(--danger)' }} />
               <span>Export PDF Document</span>

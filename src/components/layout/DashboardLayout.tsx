@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Avatar, Badge } from '../ui/UIComponents';
 import { 
@@ -16,7 +16,8 @@ import {
   Moon, 
   Search, 
   ChevronDown, 
-  LogOut
+  LogOut,
+  Menu
 } from 'lucide-react';
 
 export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -35,6 +36,17 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
@@ -66,19 +78,35 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg-main)' }}>
+      {/* Mobile Drawer Backdrop */}
+      {isMobile && mobileSidebarOpen && (
+        <div
+          onClick={() => setMobileSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 999
+          }}
+        />
+      )}
+
       {/* SIDEBAR NAVIGATION */}
       <aside
         style={{
-          width: sidebarCollapsed ? '72px' : '260px',
+          width: isMobile ? '260px' : sidebarCollapsed ? '72px' : '260px',
           backgroundColor: 'var(--bg-sidebar)',
           borderRight: '1px solid var(--border-color)',
-          display: 'flex',
+          display: isMobile && !mobileSidebarOpen ? 'none' : 'flex',
           flexDirection: 'column',
           transition: 'all var(--transition-speed) var(--transition-ease)',
-          position: 'sticky',
+          position: isMobile ? 'fixed' : 'sticky',
           top: 0,
+          left: 0,
           height: '100vh',
-          zIndex: 100
+          zIndex: 1000,
+          boxShadow: isMobile ? 'var(--shadow-xl)' : 'none'
         }}
       >
         {/* Sidebar Header */}
@@ -87,35 +115,37 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
             padding: '24px 20px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: sidebarCollapsed ? 'center' : 'space-between',
+            justifyContent: (sidebarCollapsed && !isMobile) ? 'center' : 'space-between',
             borderBottom: '1px solid var(--border-color)',
             height: '80px'
           }}
         >
-          {!sidebarCollapsed && (
+          {(!sidebarCollapsed || isMobile) && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold' }}>V</div>
               <span style={{ fontWeight: 800, fontSize: '20px', fontFamily: 'var(--font-heading)' }}>Vibe OS</span>
             </div>
           )}
-          {sidebarCollapsed && (
+          {(sidebarCollapsed && !isMobile) && (
             <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold' }}>V</div>
           )}
-          <button
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--text-muted)',
-              cursor: 'pointer',
-              display: 'flex',
-              padding: '6px',
-              borderRadius: 'var(--radius-sm)'
-            }}
-            className="hover-lift"
-          >
-            <ChevronLeft style={{ transform: sidebarCollapsed ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }} size={16} />
-          </button>
+          {!isMobile && (
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--text-muted)',
+                cursor: 'pointer',
+                display: 'flex',
+                padding: '6px',
+                borderRadius: 'var(--radius-sm)'
+              }}
+              className="hover-lift"
+            >
+              <ChevronLeft style={{ transform: sidebarCollapsed ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }} size={16} />
+            </button>
+          )}
         </div>
 
         {/* Sidebar Menu Items */}
@@ -125,7 +155,10 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
             return (
               <button
                 key={item.id}
-                onClick={() => setDashboardTab(item.id)}
+                onClick={() => {
+                  setDashboardTab(item.id);
+                  if (isMobile) setMobileSidebarOpen(false);
+                }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -140,19 +173,19 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
                   textAlign: 'left',
                   transition: 'all 200ms',
                   width: '100%',
-                  justifyContent: sidebarCollapsed ? 'center' : 'flex-start'
+                  justifyContent: (sidebarCollapsed && !isMobile) ? 'center' : 'flex-start'
                 }}
                 className="hover-lift"
               >
                 <div style={{ display: 'flex', color: isActive ? 'var(--primary)' : 'var(--text-muted)' }}>{item.icon}</div>
-                {!sidebarCollapsed && <span style={{ fontSize: 'var(--fs-small)' }}>{item.label}</span>}
+                {(!sidebarCollapsed || isMobile) && <span style={{ fontSize: 'var(--fs-small)' }}>{item.label}</span>}
               </button>
             );
           })}
         </nav>
 
         {/* Sidebar Footer Role Swapper (Mini-Indicator) */}
-        {!sidebarCollapsed && (
+        {(!sidebarCollapsed || isMobile) && (
           <div style={{ padding: '16px', borderTop: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <span style={{ fontSize: '11px', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 700 }}>
               Active Workspace Role
@@ -176,28 +209,49 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '0 24px',
+            padding: isMobile ? '0 12px' : '0 24px',
             position: 'sticky',
             top: 0,
             zIndex: 99
           }}
         >
           {/* Left: Breadcrumbs & Mobile Menu toggle */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '16px' }}>
+            {isMobile && (
+              <button
+                onClick={() => setMobileSidebarOpen(true)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--text-main)',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 'var(--radius-md)',
+                }}
+              >
+                <Menu size={20} />
+              </button>
+            )}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--text-muted)', fontWeight: 500 }}>
-              {getBreadcrumbs().map((b, i) => (
-                <React.Fragment key={i}>
-                  {i > 0 && <span style={{ opacity: 0.5 }}>/</span>}
-                  <span style={{ color: i === getBreadcrumbs().length - 1 ? 'var(--text-main)' : 'inherit', fontWeight: i === getBreadcrumbs().length - 1 ? 600 : 'inherit' }}>
-                    {b}
-                  </span>
-                </React.Fragment>
-              ))}
+              {getBreadcrumbs().map((b, i) => {
+                if (isMobile && i < getBreadcrumbs().length - 1) return null;
+                return (
+                  <React.Fragment key={i}>
+                    {i > 0 && !isMobile && <span style={{ opacity: 0.5 }}>/</span>}
+                    <span style={{ color: i === getBreadcrumbs().length - 1 ? 'var(--text-main)' : 'inherit', fontWeight: i === getBreadcrumbs().length - 1 ? 600 : 'inherit' }}>
+                      {b}
+                    </span>
+                  </React.Fragment>
+                );
+              })}
             </div>
           </div>
 
           {/* Right: Actions (Search, Notify, Theme, Profile) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '16px' }}>
             
             {/* Search Input (Ctrl+K trigger representation) */}
             <div
@@ -208,28 +262,32 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '8px 12px',
+                justifyContent: 'center',
+                gap: isMobile ? '0' : '8px',
+                padding: isMobile ? '8px' : '8px 12px',
                 borderRadius: 'var(--radius-md)',
                 backgroundColor: 'var(--bg-main)',
                 border: '1px solid var(--border-color)',
                 cursor: 'pointer',
                 color: 'var(--text-muted)',
                 fontSize: '13px',
-                width: '180px'
+                width: isMobile ? '36px' : '180px',
+                height: isMobile ? '36px' : 'auto'
               }}
               className="hover-lift"
             >
               <Search size={14} />
-              <span>Search...</span>
-              <kbd style={{
-                marginLeft: 'auto',
-                backgroundColor: 'var(--bg-card)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '4px',
-                padding: '1px 5px',
-                fontSize: '10px'
-              }}>⌘K</kbd>
+              {!isMobile && <span>Search...</span>}
+              {!isMobile && (
+                <kbd style={{
+                  marginLeft: 'auto',
+                  backgroundColor: 'var(--bg-card)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '4px',
+                  padding: '1px 5px',
+                  fontSize: '10px'
+                }}>⌘K</kbd>
+              )}
             </div>
 
             {/* Theme Toggle */}
@@ -417,7 +475,7 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
         </header>
 
         {/* CONTAINER VIEWPORT FOR CHILDREN COMPONENTS */}
-        <main style={{ flex: 1, padding: '24px', overflowY: 'auto' }}>
+        <main style={{ flex: 1, padding: isMobile ? '16px' : '24px', overflowY: 'auto' }}>
           {children}
         </main>
       </div>
