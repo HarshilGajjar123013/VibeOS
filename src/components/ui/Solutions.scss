@@ -1,0 +1,403 @@
+@use "sass:color";
+
+$white: #ffffff;
+$text: #1a1a1a;
+$text-muted: #6b7280;
+$purple: #7e53ff;
+$purple-light: #b49eff;
+$bg: #f8f8fb;
+
+// Card dimensions
+$card-w: 160px;
+$card-h: 200px;
+$card-gap: 18px;
+$card-radius: 22px;
+
+// Computed strip height for seamless loop
+$strip-unit: ($card-h + $card-gap) * 2;
+
+/* --- Infinite Scroll Keyframes --- */
+@keyframes scroll-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(calc(-1 * #{$strip-unit})); }
+}
+
+@keyframes scroll-down {
+  0%   { transform: translateY(calc(-1 * #{$strip-unit})); }
+  100% { transform: translateY(0); }
+}
+
+/* --- Ambient pulse behind center icon --- */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);    opacity: 0.35; }
+  50%  { transform: scale(1.25); opacity: 0.08; }
+  100% { transform: scale(1);    opacity: 0.35; }
+}
+
+/* ============================================
+   Section Root
+   ============================================ */
+.solutions {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $bg;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba($purple, 0.04) 0, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba($purple, 0.04) 0, transparent 50%);
+  padding: 100px 24px;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+}
+
+/* ============================================
+   Container: 3-part horizontal layout
+   ============================================ */
+.solutions__container {
+  width: min(1280px, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 140px;
+  position: relative;
+}
+
+/* ============================================
+   Side Wrapper (holds 2 columns each)
+   ============================================ */
+.solutions__side {
+  display: flex;
+  gap: $card-gap;
+  height: 480px;
+  position: relative;
+  flex-shrink: 0;
+
+  // Top & bottom gradient masks for soft fade
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 110px;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  &::before {
+    top: 0;
+    background: linear-gradient(to bottom, $bg 0%, transparent 100%);
+  }
+
+  &::after {
+    bottom: 0;
+    background: linear-gradient(to top, $bg 0%, transparent 100%);
+  }
+}
+
+/* ============================================
+   Individual Column (vertical strip)
+   ============================================ */
+.solutions__column {
+  width: $card-w;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+
+  &:hover .solutions__column-track {
+    animation-play-state: paused;
+  }
+}
+
+.solutions__column-track {
+  display: flex;
+  flex-direction: column;
+  gap: $card-gap;
+  will-change: transform;
+
+  .solutions__column--up & {
+    animation: scroll-up 18s linear infinite;
+  }
+
+  .solutions__column--down & {
+    animation: scroll-down 18s linear infinite;
+  }
+}
+
+// Speed variants
+.solutions__column--slow .solutions__column-track {
+  animation-duration: 26s;
+}
+
+.solutions__column--normal .solutions__column-track {
+  animation-duration: 20s;
+}
+
+/* ============================================
+   Card Styling
+   ============================================ */
+.solutions__card {
+  width: $card-w;
+  height: $card-h;
+  border-radius: $card-radius;
+  background: $white;
+  border: 3px solid $white;
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.02);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.06);
+    box-shadow:
+      0 20px 50px rgba($purple, 0.12),
+      0 0 0 1px rgba($purple, 0.12);
+    border-color: rgba($purple, 0.18);
+    z-index: 10;
+  }
+}
+
+.solutions__card-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: calc(#{$card-radius} - 3px);
+  overflow: hidden;
+
+  // Bottom overlay removed to keep images crisp
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: transparent;
+    pointer-events: none;
+    z-index: 2;
+  }
+}
+
+.solutions__card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================
+   Center Content Block
+   ============================================ */
+.solutions__center {
+  flex: 1;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  z-index: 10;
+  padding: 20px 0;
+}
+
+// Pulsing ring behind the icon
+.solutions__icon-ring {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 30px;
+    background: rgba($purple, 0.12);
+    animation: pulse-ring 3.5s ease-in-out infinite;
+    z-index: 0;
+  }
+}
+
+.solutions__icon-card {
+  position: relative;
+  z-index: 1;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  background-color: $white;
+  color: $purple;
+  font-size: 30px;
+  box-shadow:
+    0 8px 28px rgba($purple, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.08);
+  }
+}
+
+.solutions__title {
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 700;
+  color: $text;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.solutions__title-break {
+  display: inline;
+  white-space: nowrap;
+}
+
+.solutions__description {
+  margin: 0 auto;
+  max-width: 420px;
+  color: $text-muted;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.solutions__button {
+  border: none;
+  height: 50px;
+  padding: 0 40px;
+  border-radius: 16px;
+  background: $purple;
+  color: $white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 26px rgba($purple, 0.25);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+
+  &:hover {
+    background: color.adjust($purple, $lightness: -6%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba($purple, 0.35);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 5px 14px rgba($purple, 0.18);
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba($purple, 0.35);
+    outline-offset: 3px;
+  }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 1100px) {
+  .solutions__container {
+    gap: 80px;
+  }
+
+  .solutions__card {
+    width: 130px;
+    height: 165px;
+  }
+
+  .solutions__column {
+    width: 130px;
+  }
+}
+
+@media (max-width: 900px) {
+  .solutions__container {
+    gap: 16px;
+  }
+
+  .solutions__side {
+    gap: 12px;
+    height: 400px;
+  }
+
+  .solutions__card {
+    width: 110px;
+    height: 140px;
+    border-radius: 18px;
+  }
+
+  .solutions__card-inner {
+    border-radius: 15px;
+  }
+
+  .solutions__column {
+    width: 110px;
+  }
+
+  .solutions__center {
+    max-width: 280px;
+    gap: 16px;
+  }
+
+  .solutions__description {
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 700px) {
+  .solutions {
+    padding: 60px 16px;
+  }
+
+  .solutions__container {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .solutions__side {
+    flex-direction: row;
+    height: auto;
+    width: 100%;
+    justify-content: center;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  .solutions__side--left  { order: 2; }
+  .solutions__side--right { order: 3; }
+
+  .solutions__center {
+    order: 1;
+    max-width: 100%;
+  }
+
+  .solutions__title {
+    white-space: normal;
+  }
+
+  .solutions__title-break {
+    display: inline;
+  }
+
+  .solutions__column {
+    height: 320px;
+    width: 120px;
+  }
+
+  .solutions__card {
+    width: 120px;
+    height: 150px;
+  }
+}
