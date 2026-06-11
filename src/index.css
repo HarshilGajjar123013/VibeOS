@@ -546,6 +546,13 @@ a {
   position: relative;
 }
 
+.landing-steps-grid .hover-lift:hover .step-number-badge {
+  transform: scale(1.1) rotate(5deg);
+  background-color: var(--primary) !important;
+  color: var(--text-inverse) !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
 .landing-benefits-section {
   display: grid;
   grid-template-columns: 1fr 1fr;

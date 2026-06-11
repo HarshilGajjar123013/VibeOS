@@ -3,14 +3,299 @@ import { useApp } from '../context/AppContext';
 import { Button, Card, Badge, Avatar } from '../components/ui/UIComponents';
 import Showcase from '../components/ui/Showcase';
 import Hero from '../components/ui/Hero';
-import { FeaturesGrid } from '../components/ui/FeaturesGrid';
 import { MOCK_JOBS, MOCK_ARTICLES } from '../data/mockData';
 import { 
   Check, 
   Mail, 
   Briefcase, 
-  MapPin 
+  MapPin,
+  Shield,
+  Users,
+  Heart,
+  Sprout,
+  Star,
+  UserCheck,
+  Sparkles,
+  Zap
 } from 'lucide-react';
+
+// ==========================================
+// CULTURE HEALTH DASHBOARD CARD (Mockup)
+// ==========================================
+const CultureHealthDashboard: React.FC = () => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [chartScale, setChartScale] = useState(0);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setChartScale(1), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const metrics = [
+    { name: 'TRUST', score: 80, icon: Shield, color: '#6366f1', bg: 'rgba(99, 102, 241, 0.08)' },
+    { name: 'ALIGNMENT', score: 72, icon: UserCheck, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.08)' },
+    { name: 'WELLBEING', score: 62, icon: Heart, color: '#ef4444', bg: 'rgba(239, 68, 68, 0.08)' },
+    { name: 'GROWTH', score: 78, icon: Sprout, color: '#10b981', bg: 'rgba(16, 185, 129, 0.08)' },
+    { name: 'RECOGNITION', score: 74, icon: Star, color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.08)' },
+    { name: 'BELONGING', score: 70, icon: Users, color: '#06b6d4', bg: 'rgba(6, 182, 212, 0.08)' }
+  ];
+
+  const insights = [
+    "Trust index is solid. Leadership transparency has improved alignment across departments.",
+    "Alignment is stable. Cross-functional checkpoints are functioning well, but product and sales could sync closer.",
+    "Wellbeing scores are lower compared to other areas. Workload and recovery time may be impacting your team's energy.",
+    "Growth support is highly rated. Team members feel there are strong career development tracks and mentorship.",
+    "Recognition scores are healthy. Celebrating small wins frequently has sustained motivation.",
+    "Belonging shows moderate scores. Diverse team bonding channels are active, though remote squads require extra focus."
+  ];
+
+  const getRadarCoord = (index: number, value: number) => {
+    const angle = (index * Math.PI) / 3;
+    const radius = (value / 100) * 105; // Spanned slightly wider for fit
+    const x = 150 + radius * Math.sin(angle);
+    const y = 150 - radius * Math.cos(angle);
+    return { x, y };
+  };
+
+  const getHexagonPoints = (lvl: number) => {
+    return Array.from({ length: 6 }).map((_, i) => {
+      const { x, y } = getRadarCoord(i, lvl);
+      return `${x},${y}`;
+    }).join(' ');
+  };
+
+  const polygonPoints = metrics.map((m, i) => {
+    const { x, y } = getRadarCoord(i, m.score * chartScale);
+    return `${x},${y}`;
+  }).join(' ');
+
+  return (
+    <div style={{
+      backgroundColor: '#ffffff',
+      borderRadius: '24px',
+      border: '1px solid var(--border-color)',
+      padding: '32px',
+      boxShadow: 'var(--shadow-xl)',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '24px',
+      width: '100%',
+      maxWidth: '480px',
+      margin: '0 auto',
+      position: 'relative',
+      fontFamily: 'var(--font-heading)'
+    }}>
+      {/* Header Row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h4 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '0.05em', margin: 0 }}>CULTURE HEALTH</h4>
+        <div style={{
+          backgroundColor: '#f5f3ff',
+          padding: '6px 12px',
+          borderRadius: '12px',
+          textAlign: 'right',
+        }}>
+          <div style={{ fontSize: '10px', color: '#7e53ff', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Overall Score</div>
+          <div style={{ fontSize: '18px', color: '#7e53ff', fontWeight: 800 }}>76/100</div>
+        </div>
+      </div>
+
+      {/* Radar Map Container */}
+      <div style={{
+        height: '340px',
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        marginTop: '10px'
+      }}>
+        {/* Radar Graphic SVG */}
+        <svg viewBox="0 0 300 300" style={{ width: '220px', height: '220px', zIndex: 2 }}>
+          {/* Hexagon Grids */}
+          {[25, 50, 75, 100].map(lvl => (
+            <polygon
+              key={lvl}
+              points={getHexagonPoints(lvl)}
+              fill="none"
+              stroke="#f1f5f9"
+              strokeWidth="1.5"
+            />
+          ))}
+
+          {/* Grid lines */}
+          {Array.from({ length: 6 }).map((_, i) => {
+            const { x, y } = getRadarCoord(i, 100);
+            return (
+              <line
+                key={i}
+                x1={150}
+                y1={150}
+                x2={x}
+                y2={y}
+                stroke="#f1f5f9"
+                strokeWidth="1.2"
+                strokeDasharray="2 2"
+              />
+            );
+          })}
+
+          {/* Active Filled Area */}
+          <polygon
+            points={polygonPoints}
+            fill="rgba(126, 83, 255, 0.15)"
+            stroke="#7e53ff"
+            strokeWidth="2.5"
+            style={{ transition: 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)' }}
+          />
+
+          {/* Radar Nodes */}
+          {metrics.map((m, i) => {
+            const { x, y } = getRadarCoord(i, m.score * chartScale);
+            const isHovered = hoveredIndex === i;
+            return (
+              <g key={i}>
+                <circle
+                  cx={x}
+                  cy={y}
+                  r={isHovered ? 6 : 4}
+                  fill={isHovered ? m.color : '#7e53ff'}
+                  stroke="#ffffff"
+                  strokeWidth="1.5"
+                  style={{ transition: 'all 0.3s ease' }}
+                />
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Labels Absolute Placement */}
+        {metrics.map((m, i) => {
+          const isHovered = hoveredIndex === i;
+          
+          const positions = [
+            { top: '-10px', left: '50%', transform: 'translateX(-50%)' }, // TRUST (top)
+            { top: '65px', right: '-12px' }, // ALIGNMENT (top right)
+            { bottom: '65px', right: '-12px' }, // WELLBEING (bottom right)
+            { bottom: '-10px', left: '50%', transform: 'translateX(-50%)' }, // GROWTH (bottom)
+            { bottom: '65px', left: '-12px' }, // RECOGNITION (bottom left)
+            { top: '65px', left: '-12px' } // BELONGING (top left)
+          ];
+
+          const Icon = m.icon;
+
+          return (
+            <div
+              key={m.name}
+              style={{
+                position: 'absolute',
+                ...positions[i],
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '6px 10px',
+                borderRadius: '10px',
+                backgroundColor: isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.92)',
+                border: isHovered ? `1.5px solid ${m.color}` : '1.5px solid rgba(226, 232, 240, 0.6)',
+                boxShadow: isHovered ? `0 6px 14px ${m.bg}` : '0 2px 6px rgba(0,0,0,0.015)',
+                cursor: 'pointer',
+                transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)',
+                zIndex: 5,
+                transform: `${positions[i].transform || ''} scale(${isHovered ? 1.05 : 1})`
+              }}
+              onMouseEnter={() => setHoveredIndex(i)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <div style={{
+                width: '22px',
+                height: '22px',
+                borderRadius: '50%',
+                backgroundColor: m.bg,
+                color: m.color,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Icon size={12} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+                <span style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', letterSpacing: '0.02em' }}>{m.name}</span>
+                <span style={{ fontSize: '10px', fontWeight: 700, color: m.color }}>{m.score}/100</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* AI Insight Section */}
+      <div style={{
+        backgroundColor: '#fbfaff',
+        borderRadius: '16px',
+        padding: '16px 20px',
+        display: 'flex',
+        gap: '14px',
+        border: '1px solid rgba(126, 83, 255, 0.08)',
+        transition: 'all 0.3s ease',
+        boxShadow: hoveredIndex !== null ? `inset 0 0 10px ${metrics[hoveredIndex].bg}` : 'none'
+      }}>
+        <div style={{
+          width: '36px',
+          height: '36px',
+          borderRadius: '50%',
+          backgroundColor: hoveredIndex !== null ? metrics[hoveredIndex].bg : '#f5f3ff',
+          color: hoveredIndex !== null ? metrics[hoveredIndex].color : '#7e53ff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          transition: 'all 0.3s ease'
+        }}>
+          {hoveredIndex !== null ? React.createElement(metrics[hoveredIndex].icon, { size: 16 }) : <Sparkles size={16} />}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: 1 }}>
+          <div style={{
+            fontSize: '11px',
+            fontWeight: 800,
+            color: hoveredIndex !== null ? metrics[hoveredIndex].color : '#7e53ff',
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            transition: 'all 0.3s ease'
+          }}>
+            {hoveredIndex !== null ? `${metrics[hoveredIndex].name} INSIGHT` : 'AI INSIGHT'}
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: 'var(--text-main)',
+            lineHeight: '1.45',
+            margin: 0,
+            transition: 'all 0.3s ease'
+          }}>
+            {hoveredIndex !== null ? insights[hoveredIndex] : insights[2]}
+          </p>
+          
+          <button style={{
+            alignSelf: 'flex-start',
+            backgroundColor: 'transparent',
+            border: '1px solid rgba(126, 83, 255, 0.25)',
+            borderRadius: '8px',
+            padding: '6px 12px',
+            fontSize: '11px',
+            fontWeight: 700,
+            color: '#7e53ff',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            marginTop: '4px',
+            transition: 'all 0.2s ease'
+          }} className="hover-lift">
+            <Zap size={10} fill="#7e53ff" />
+            View Recommended Actions
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // ==========================================
 // LANDING PAGE
@@ -21,8 +306,6 @@ export const LandingPage: React.FC = () => {
       <Hero />
 
       <Showcase />
-
-      <FeaturesGrid />
 
       {/* How it Works */}
       <section className="landing-how-it-works" style={{
@@ -37,21 +320,76 @@ export const LandingPage: React.FC = () => {
           </div>
           <div className="landing-steps-grid">
             {[
-              { num: '1', title: 'Collect Feedback', desc: 'Send automated pulses or wellbeing surveys. Team members reply anonymously in 30 seconds via Slack, Teams, or Web.' },
-              { num: '2', title: 'Analyze Trends', desc: 'Our AI model aggregates opinions, calculates sentiment indices, and highlights departments requiring supervisor support.' },
-              { num: '3', title: 'Transform Culture', desc: 'Turn findings into plans. Recommend targeted manager actions, share highlights, and track improvement over time.' }
+              { 
+                num: '1', 
+                title: 'Capture Signals', 
+                desc: 'Gather feedback, recognition, sentiment, and workplace experiences from across your organization.',
+                sub: 'VibeOS continuously collects the human signals that reveal how people feel, collaborate, and perform.'
+              },
+              { 
+                num: '2', 
+                title: 'Generate Intelligence', 
+                desc: 'Transform scattered feedback into clear organizational insights.',
+                sub: 'Our AI identifies patterns, uncovers hidden risks, and surfaces opportunities leaders would otherwise miss.'
+              },
+              { 
+                num: '3', 
+                title: 'Drive Change', 
+                desc: 'Turn intelligence into measurable cultural outcomes.',
+                sub: 'Receive recommendations, track progress, and build stronger teams through informed action.'
+              }
             ].map((step, i) => (
-              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative' }}>
+              <Card 
+                key={i} 
+                variant="outlined" 
+                hoverEffect={true} 
+                style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: '16px', 
+                  padding: '32px 28px',
+                  borderRadius: '24px',
+                  background: 'var(--bg-card)',
+                  border: '1px solid var(--border-color)',
+                  transition: 'all 0.35s cubic-bezier(0.25, 1, 0.5, 1)',
+                  boxShadow: 'var(--shadow-sm)'
+                }}
+              >
+                {/* Number Circle Badge */}
                 <div style={{
-                  fontSize: '48px',
-                  fontWeight: 900,
-                  color: 'var(--primary-light)',
-                  lineHeight: 1,
-                  fontFamily: 'var(--font-heading)'
-                }}>{step.num}</div>
-                <h3 style={{ fontSize: '22px' }}>{step.title}</h3>
-                <p style={{ fontSize: '15px' }}>{step.desc}</p>
-              </div>
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '18px',
+                  fontWeight: 800,
+                  backgroundColor: 'var(--primary-light)',
+                  color: 'var(--primary)',
+                  fontFamily: 'var(--font-heading)',
+                  transition: 'all 0.3s ease',
+                  boxShadow: 'inset 0 0 10px rgba(79, 70, 229, 0.05)'
+                }} className="step-number-badge">
+                  {step.num}
+                </div>
+                
+                {/* Text Group */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>{step.title}</h3>
+                  <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
+                    {step.desc}
+                  </p>
+                </div>
+                
+                {/* Divider Line */}
+                <hr style={{ border: 'none', borderTop: '1px dashed var(--border-color)', margin: '4px 0 0 0' }} />
+                
+                {/* Supporting Text */}
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)', opacity: 0.85, lineHeight: '1.5', margin: 0, fontStyle: 'italic' }}>
+                  {step.sub}
+                </p>
+              </Card>
             ))}
           </div>
         </div>
@@ -61,43 +399,57 @@ export const LandingPage: React.FC = () => {
       <section className="landing-benefits-section">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <Badge type="success">BENEFITS</Badge>
-          <h2>Build a workplace people never want to leave</h2>
-          <p>
-            Vibe OS doesn't just collect survey submissions. It builds communication frameworks, helps managers lead, and helps leadership protect psychological safety.
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {['Reduce burnout risk with early warnings', 'Retain your top engineers, designers, and reps', 'Align multiple offices and distributed squads', 'Measure improvement of company values'].map(txt => (
+          <h2 style={{ fontSize: 'var(--fs-h2)', lineHeight: '1.2', fontWeight: 800 }}>The health of your organization shouldn't be a guessing game.</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <p style={{ margin: 0, fontSize: '15px', lineHeight: '1.6', color: 'var(--text-muted)' }}>
+              Founders can track revenue, runway, hiring, and product metrics in real time.
+            </p>
+            <p style={{ margin: 0, fontSize: '15px', lineHeight: '1.6', color: 'var(--text-muted)' }}>
+              Yet the factor that influences all of them—culture—often remains invisible.
+            </p>
+            <p style={{ margin: 0, fontSize: '15px', lineHeight: '1.6', color: 'var(--text-muted)' }}>
+              VibeOS makes organizational health measurable, giving leaders the clarity to build stronger teams, better managers, and companies that endure.
+            </p>
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '8px' }}>
+            {[
+              'Reveal what traditional metrics miss',
+              'Spot risks before they affect growth',
+              'Strengthen alignment at every level',
+              'Build a culture that compounds over time'
+            ].map(txt => (
               <div key={txt} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <Check size={18} style={{ color: 'var(--success)', flexShrink: 0 }} />
-                <span style={{ fontWeight: 600 }}>{txt}</span>
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--success-light)',
+                  color: 'var(--success)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  <Check size={14} strokeWidth={3} />
+                </div>
+                <span style={{ fontWeight: 600, fontSize: '15px', color: 'var(--text-main)' }}>{txt}</span>
               </div>
             ))}
           </div>
         </div>
+        
+        {/* Culture Health Dashboard Mockup Card */}
         <div style={{
           backgroundColor: 'var(--primary-light)',
           padding: '40px',
           borderRadius: 'var(--radius-lg)',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-          <div style={{
-            backgroundColor: 'var(--bg-card)',
-            padding: '24px',
-            borderRadius: 'var(--radius-md)',
-            boxShadow: 'var(--shadow-xl)',
-            width: '100%'
-          }}>
-            <h4 style={{ marginBottom: '16px' }}>Team Retention Benefit</h4>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: 'var(--fs-small)' }}>
-              <span>Turnover Rate</span>
-              <span style={{ color: 'var(--success)', fontWeight: 600 }}>-28% YoY</span>
-            </div>
-            <div style={{ height: '8px', backgroundColor: 'var(--border-color)', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ width: '42%', height: '100%', backgroundColor: 'var(--success)' }} />
-            </div>
-          </div>
+          alignItems: 'center',
+          boxShadow: 'inset 0 0 40px rgba(79, 70, 229, 0.03)'
+        }} className="mobile-padding-sm">
+          <CultureHealthDashboard />
         </div>
       </section>
     </div>

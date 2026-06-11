@@ -18,10 +18,10 @@ type ResourceLink = {
 };
 
 const PLATFORM_LINKS: PlatformLink[] = [
-  { label: 'Engage', page: 'features', description: 'Understand your employees and focus your action plans', badge: null },
-  { label: 'Performance Culture Quadrant', page: 'features', description: 'Measure impact across engagement and performance', badge: 'New' },
+  // { label: 'Engage', page: 'features', description: 'Understand your employees and focus your action plans', badge: null },
+  { label: 'Vibe Index Matrix', page: 'features', description: 'Measure impact across engagement and performance', badge: 'New' },
   { label: 'Retention Insights', page: 'features', description: 'Identify patterns that help you keep great people', badge: null },
-  { label: 'DEI Survey', page: 'features', description: 'Capture inclusion feedback across the organization', badge: null },
+  // { label: 'DEI Survey', page: 'features', description: 'Capture inclusion feedback across the organization', badge: null },
   { label: 'Ready-to-use Surveys', page: 'features', description: 'Launch proven survey templates faster', badge: null },
   { label: 'AI Comment Summaries', page: 'features', description: 'Turn open-text feedback into concise themes', badge: null },
   { label: 'Proven Action Plans', page: 'features', description: 'Recommend next steps with confidence', badge: null },
@@ -32,7 +32,7 @@ const PLATFORM_LINKS: PlatformLink[] = [
 
 const RESOURCE_LINKS: ResourceLink[] = [
   { label: 'People Science', page: 'blog', description: 'Expert guidance and proven strategies to build thriving workplaces.' },
-  { label: 'Research', page: 'blog', description: 'Industry trends and evidence-based best practices powered by employee insights.' },
+  // { label: 'Research', page: 'blog', description: 'Industry trends and evidence-based best practices powered by employee insights.' },
   { label: 'Benchmarks', page: 'blog', description: 'Compare your employee experience against relevant industry standards.' },
   { label: 'ROI Calculator', page: 'blog', description: 'Quantify the value of investing in culture and employee engagement.' },
 ];
@@ -76,7 +76,14 @@ const Navbar: React.FC = () => {
             onClick={() => nav('landing')}
             aria-label="Go to home"
           >
-            Vibe OS
+            <img
+              className="navbar__logo-img"
+              src="/images/logo.png"
+              alt="VibeOS logo"
+              width={40}
+              height={40}
+            />
+            <span className="navbar__logo-text">VibeOS</span>
           </button>
 
           {/* ── Desktop Nav ── */}
@@ -139,16 +146,16 @@ const Navbar: React.FC = () => {
                 type="button"
                 className="navbar__link navbar__link--trigger"
               >
-                Science
+                Insights
                 <span className="navbar__caret" aria-hidden="true" />
               </button>
 
               <div className="navbar__dropdown-panel navbar__dropdown-panel--resources">
                 {/* Left intro */}
                 <div className="navbar__resources-intro">
-                  <p className="navbar__resources-kicker">Science</p>
+                  <p className="navbar__resources-kicker">Insights</p>
                   <h3 className="navbar__resources-heading">
-                    Explore practical guides, research, and tools to build
+                    Explore practical guides, and tools to build
                     high-performing teams.
                   </h3>
                 </div>
@@ -176,7 +183,7 @@ const Navbar: React.FC = () => {
               className="navbar__link"
               onClick={() => nav('about')}
             >
-              About
+              Our Story
             </button>
 
             {/* Contact */}

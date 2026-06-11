@@ -62,11 +62,13 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         }}>
           {/* Logo column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold' }}>V</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <img src="/images/logo.png" alt="Vibe OS logo" style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover' }} />
               <span style={{ fontWeight: 800, fontSize: '20px', fontFamily: 'var(--font-heading)' }}>Vibe OS</span>
             </div>
-            <p style={{ fontSize: '13px' }}>"Build workplaces people love."</p>
+            <p style={{ fontSize: '13px' }}>
+              "Build workplaces people love."
+            </p>
           </div>
 
           {/* Link columns */}
