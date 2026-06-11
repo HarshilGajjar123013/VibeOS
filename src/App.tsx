@@ -64,10 +64,10 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <img src="/images/logo.png" alt="Vibe OS logo" style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover' }} />
-              <span style={{ fontWeight: 800, fontSize: '20px', fontFamily: 'var(--font-heading)' }}>Vibe OS</span>
+              <span style={{ fontWeight: 800, fontSize: '20px', fontFamily: 'var(--font-heading)' }}>VibeOS</span>
             </div>
             <p style={{ fontSize: '13px' }}>
-              "Build workplaces people love."
+              "Your Culture Intelligence Partner"
             </p>
           </div>
 
@@ -91,8 +91,8 @@ const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
           ))}
         </div>
         <div style={{ maxWidth: '1200px', margin: '40px auto 0 auto', borderTop: '1px solid var(--border-color)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', fontSize: '12px', color: 'var(--text-muted)' }}>
-          <span>© 2026 Vibe OS Inc. All rights reserved.</span>
-          <span>SOC 2 Type II Certified • GDPR Compliant</span>
+          <span>© 2026 VibeOS Inc. All rights reserved.</span>
+          {/* <span>SOC 2 Type II Certified • GDPR Compliant</span> */}
         </div>
       </footer>
     </div>
